@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.strapi/
+*.log
+.env
+.DS_Store
+.npmrc

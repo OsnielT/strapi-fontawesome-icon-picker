@@ -1,0 +1,88 @@
+{
+  "name": "strapi-plugin-fontawesome-icon",
+  "version": "0.1.0",
+  "description": "A Strapi v5 custom field for picking Font Awesome icons — searchable picker with every licensed family (Classic, Sharp, Duotone, Jelly, and more), sourced from the Font Awesome API and cached.",
+  "keywords": [
+    "strapi",
+    "strapi-plugin",
+    "strapi-v5",
+    "custom-field",
+    "fontawesome",
+    "font-awesome",
+    "icon",
+    "icon-picker"
+  ],
+  "license": "MIT",
+  "author": "Osniel Torres",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Technology-Delivery/strapi-fontawesome-icon-picker.git"
+  },
+  "homepage": "https://github.com/Technology-Delivery/strapi-fontawesome-icon-picker#readme",
+  "bugs": {
+    "url": "https://github.com/Technology-Delivery/strapi-fontawesome-icon-picker/issues"
+  },
+  "type": "commonjs",
+  "exports": {
+    "./package.json": "./package.json",
+    "./strapi-admin": {
+      "source": "./admin/src/index.js",
+      "import": "./dist/admin/index.mjs",
+      "require": "./dist/admin/index.js",
+      "default": "./dist/admin/index.js"
+    },
+    "./strapi-server": {
+      "source": "./server/src/index.js",
+      "import": "./dist/server/index.mjs",
+      "require": "./dist/server/index.js",
+      "default": "./dist/server/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "ARCHITECTURE.md"
+  ],
+  "scripts": {
+    "build": "strapi-plugin build",
+    "watch": "strapi-plugin watch",
+    "watch:link": "strapi-plugin watch:link",
+    "verify": "strapi-plugin verify",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "js-yaml": "^4.3.2"
+  },
+  "devDependencies": {
+    "@strapi/design-system": "2.2.3",
+    "@strapi/icons": "2.2.3",
+    "@strapi/sdk-plugin": "^5.3.2",
+    "@strapi/strapi": "^5.50.1",
+    "prettier": "^3.3.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-intl": "^6.6.0",
+    "react-router-dom": "^6.26.0",
+    "styled-components": "^6.1.12"
+  },
+  "peerDependencies": {
+    "@strapi/design-system": "^2.0.0",
+    "@strapi/icons": "^2.0.0",
+    "@strapi/strapi": "^5.0.0",
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0",
+    "react-intl": "^6.0.0",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=22.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "kind": "plugin",
+    "name": "fontawesome-icon",
+    "displayName": "Font Awesome Icon",
+    "description": "Custom field to pick Font Awesome icons"
+  }
+}
