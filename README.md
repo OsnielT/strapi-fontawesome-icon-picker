@@ -89,7 +89,9 @@ Restart Strapi after configuring.
    | --- | --- |
    | Name only | `user` |
    | Name + type *(default)* | `fa-solid fa-user` |
-   | Full detail object | `{"name":"user","family":"classic","style":"solid","prefix":"fa-solid","id":"fa-solid fa-user","label":"User"}` |
+   | Full detail object | `{"name":"user","family":"classic","style":"solid","prefix":"fa-solid","id":"fa-solid fa-user","label":"User","width":448,"height":512,"path":"M224 256A128 128…"}` |
+
+   The **object** format includes the SVG geometry (`width`/`height`/`path`; `path` is a string, or `[secondary, primary]` for duotone), so consumers can render an inline `<svg>` with **no Font Awesome runtime** — no packages, no Kit, no CDN.
 3. **Settings → Font Awesome:** pick your **kit** (sets the Font Awesome version and available packages) and the **packages** you want editors to use. Fewer packages = cleaner UI and less bandwidth.
 4. In an entry, click the field to open the picker, choose an icon, and save.
 
@@ -113,10 +115,32 @@ Font Awesome's Pro/Pro+ npm packages are **1 GB+**, which burns your **Package B
 
 ---
 
+## Server‑to‑server resolve endpoint
+
+A **public** content‑API route lets a backend (e.g. a BFF) look up a single icon's SVG — useful to **back‑fill** the geometry for values that were stored without it (older entries, or fields using the `name`/`name + type` output):
+
+```
+GET {STRAPI_URL}/api/fontawesome-icon/resolve?id=<class or name>
+
+# examples
+GET /api/fontawesome-icon/resolve?id=user
+GET /api/fontawesome-icon/resolve?id=fa-jelly-duo%20fa-regular%20fa-user
+
+→ 200 { "id", "name", "label", "family", "style", "prefix", "width", "height", "path" }
+#   path is a string, or [secondary, primary] for duotone
+```
+
+Notes:
+- It returns **only public icon geometry** — never the API token or account data — so it is **unauthenticated** (`auth: false`). The secret `FONTAWESOME_API_TOKEN` stays server‑side.
+- It reuses the same server‑side cache, so repeated look‑ups don't re‑hit the Font Awesome API.
+- All other routes are admin‑only (`admin::isAuthenticatedAdmin`); this is the single intentionally public one.
+
+---
+
 ## Security
 
 - The API token is read **only** from `FONTAWESOME_API_TOKEN` on the server. It is **never** stored in the database, returned to the admin panel, or exposed to the content API.
-- **All** Font Awesome API calls happen server‑side. The admin talks only to this plugin's admin routes, all gated by `admin::isAuthenticatedAdmin`.
+- **All** Font Awesome API calls happen server‑side. Admin routes are gated by `admin::isAuthenticatedAdmin`; the only public route is `/api/fontawesome-icon/resolve` (see above), which returns non‑secret icon geometry only.
 - Persisted settings (selected kit, enabled packages) are **non‑secret** and stored in Strapi's core store.
 
 ---
