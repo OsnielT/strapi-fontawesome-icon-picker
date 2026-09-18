@@ -6,6 +6,9 @@ export const formatValue = (icon, format) => {
     case 'name':
       return icon.name; // e.g. "user"
     case 'object':
+      // Include the SVG geometry so consumers can render inline <svg> without
+      // any Font Awesome runtime (no packages, no Kit). `path` is a string, or
+      // a [secondary, primary] array for duotone families.
       return JSON.stringify({
         name: icon.name,
         family: icon.family,
@@ -13,6 +16,9 @@ export const formatValue = (icon, format) => {
         prefix: icon.prefix,
         id: icon.id,
         label: icon.label,
+        width: icon.width,
+        height: icon.height,
+        path: icon.path,
       });
     case 'class':
     default:

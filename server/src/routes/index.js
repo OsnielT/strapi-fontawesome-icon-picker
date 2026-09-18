@@ -30,4 +30,11 @@ module.exports = {
       admin('GET', '/status', 'icons.status'),
     ],
   },
+  // Public server-to-server resolve, for a BFF/backend to back-fill an icon's
+  // SVG (width/height/path) for values stored without it. Returns only public
+  // icon geometry — never the API token or account data — so it is unauthenticated.
+  'content-api': {
+    type: 'content-api',
+    routes: [{ method: 'GET', path: '/resolve', handler: 'icons.resolve', config: { auth: false } }],
+  },
 };
