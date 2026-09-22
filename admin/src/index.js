@@ -4,10 +4,12 @@ import PluginIcon from './components/PluginIcon';
 export default {
   register(app) {
     // The custom field. Stored value is a string (e.g. "fa-solid fa-user").
+    // Registered as `text` (not `string`) so the underlying column is Postgres
+    // `text` with no 255-char cap — the `object` output format can exceed that.
     app.customFields.register({
       name: 'icon',
       pluginId: PLUGIN_ID,
-      type: 'string',
+      type: 'text',
       icon: PluginIcon,
       intlLabel: {
         id: `${PLUGIN_ID}.field.label`,
