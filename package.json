@@ -16,11 +16,11 @@
   "author": "Osniel Torres",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Technology-Delivery/strapi-fontawesome-icon-picker.git"
+    "url": "git+https://github.com/OsnielT/strapi-fontawesome-icon-picker.git"
   },
-  "homepage": "https://github.com/Technology-Delivery/strapi-fontawesome-icon-picker#readme",
+  "homepage": "https://github.com/OsnielT/strapi-fontawesome-icon-picker#readme",
   "bugs": {
-    "url": "https://github.com/Technology-Delivery/strapi-fontawesome-icon-picker/issues"
+    "url": "https://github.com/OsnielT/strapi-fontawesome-icon-picker/issues"
   },
   "type": "commonjs",
   "exports": {
