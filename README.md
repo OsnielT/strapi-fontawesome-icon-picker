@@ -9,6 +9,10 @@ A Strapi v5 custom field for picking [Font Awesome](https://fontawesome.com) ico
 
 Works out of the box with the free icon set. Add a Font Awesome API token to unlock your kits and every Pro / Pro+ family your account is licensed for.
 
+
+https://github.com/user-attachments/assets/be8b4920-8aff-43c7-b12e-e34304093324
+
+
 ## Table of contents
 
 - [Features](#features)
