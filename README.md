@@ -9,6 +9,7 @@ A **Strapi v5** custom field for picking [Font Awesome](https://fontawesome.com)
 ## Features
 
 - **Custom field** `Font Awesome icon` — appears under **Custom** in the Content‑Type Builder.
+- **Works out of the box** with the free icons (Classic Solid, Classic Regular, Brands) — no token or account needed.
 - **Every licensed family** via the API: Classic, Sharp, Duotone, Sharp Duotone, and (on Pro+) Chisel, Etch, Graphite, Jelly, Notdog, Pixel, Slab, Thumbprint, Whiteboard, and more.
 - **Emoji‑style picker:** search, categorized browse with sticky headers, and a bottom category jump‑bar.
 - **Family → Variant → Weight** dropdowns that render **1–3 controls** depending on what the selected pack offers (e.g. Classic → Standard/Duotone → Solid/Regular/Light/Thin; Jelly → Standard/Duo/Fill).
@@ -23,7 +24,7 @@ A **Strapi v5** custom field for picking [Font Awesome](https://fontawesome.com)
 
 - **Strapi v5** (tested on 5.50+).
 - **Node 18+** (uses the global `fetch`).
-- A **Font Awesome API token** — see below. A Free account token shows the free families; **Pro / Pro+** tokens unlock the Pro and Pro+ families.
+- *Optional:* a **Font Awesome API token** — see below. Without one, the plugin uses the free icons bundled with `@fortawesome/fontawesome-free`. **Pro / Pro+** tokens unlock your kits and the Pro and Pro+ families.
 
 ---
 
@@ -35,11 +36,15 @@ npm install strapi-plugin-fontawesome-icon
 yarn add strapi-plugin-fontawesome-icon
 ```
 
-No private registry or npm auth token is required to install — the only Font Awesome dependency is the public `@fortawesome/fontawesome-free` package (used for category names only).
+No private registry or npm auth token is required to install — the only Font Awesome dependency is the public `@fortawesome/fontawesome-free` package (category names, and the free icon set when no API token is configured).
 
 ---
 
 ## Configure
+
+**Free icons only?** Skip this section — enable the plugin and restart Strapi. With no token the picker serves the bundled free icons (no API calls); the settings page lets you choose among Classic Solid, Classic Regular and Brands.
+
+**To use your Font Awesome kits / Pro icons:**
 
 **1. Create a Font Awesome API token**
 

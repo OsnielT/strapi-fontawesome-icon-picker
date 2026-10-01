@@ -6,6 +6,7 @@ const { buildCategories } = require('../lib/categories');
 const { createApiClient } = require('../lib/apiClient');
 const { createSettings } = require('../lib/settings');
 const { createCatalog } = require('../lib/catalog');
+const { FREE_VERSION } = require('../lib/freeIcons');
 
 /**
  * Service facade. Composes the API client, settings store, and catalog, and
@@ -85,6 +86,8 @@ module.exports = ({ strapi }) => {
     },
 
     async catalogVersion() {
+      // Distinct version so browsers drop the free set once a token is added.
+      if (catalog.isFree()) return `free-${FREE_VERSION}`;
       return (await settings.get()).version || '7.x';
     },
 

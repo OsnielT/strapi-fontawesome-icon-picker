@@ -2,6 +2,7 @@
 
 const { PLUGIN_ID } = require('../pluginId');
 const naming = require('./naming');
+const { listFreeStyles, getFreeStyleIcons } = require('./freeIcons');
 
 const { classPrefix, familyToEnum, styleToEnum, packageId, packageLabel, STYLE_PREFIX } = naming;
 
@@ -11,7 +12,11 @@ const { classPrefix, familyToEnum, styleToEnum, packageId, packageLabel, STYLE_P
  * cache clearing. Deps: { gql, getConfig, store, strapi }.
  */
 const createCatalog = ({ gql, getConfig, store, strapi }) => {
+  // No API token -> serve the bundled free icon set (no API calls, no DB cache).
+  const isFree = () => !getConfig().apiToken;
+
   const listKits = async () => {
+    if (isFree()) return [];
     const data = await gql('{ me { kits { token name version } } }');
     return ((data.me && data.me.kits) || []).map((k) => ({
       token: k.token,
@@ -21,6 +26,7 @@ const createCatalog = ({ gql, getConfig, store, strapi }) => {
   };
 
   const listFamilyStyles = async (version) => {
+    if (isFree()) return listFreeStyles();
     const data = await gql('query($v:String!){ release(version:$v){ familyStyles { family style } } }', {
       v: version,
     });
@@ -89,6 +95,7 @@ const createCatalog = ({ gql, getConfig, store, strapi }) => {
 
   // Cached wrapper around fetchStyleFromApi.
   const getStyleIcons = async (version, family, style) => {
+    if (isFree()) return getFreeStyleIcons(family, style);
     const key = cacheKeyFor(version, family, style);
     const cached = await store.get({ key });
     if (cached && Object.keys(cached).length) return cached;
@@ -127,6 +134,11 @@ const createCatalog = ({ gql, getConfig, store, strapi }) => {
     }
     if (!name) return null;
 
+    if (isFree()) {
+      const icons = getFreeStyleIcons(family, style);
+      return Object.hasOwn(icons, name) ? icons[name] : null;
+    }
+
     try {
       // Reuse a cached style payload when the picker already loaded this style.
       const cached = await store.get({ key: cacheKeyFor(version, family, style) });
@@ -164,7 +176,7 @@ const createCatalog = ({ gql, getConfig, store, strapi }) => {
     return { cleared: (deleted && deleted.count) || 0 };
   };
 
-  return { listKits, listFamilyStyles, getStyleIcons, resolve, clearCache };
+  return { isFree, listKits, listFamilyStyles, getStyleIcons, resolve, clearCache };
 };
 
 module.exports = { createCatalog };

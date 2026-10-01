@@ -29,23 +29,26 @@ const Settings = () => {
   const [version, setVersion] = React.useState('7.x');
   const [styleOptions, setStyleOptions] = React.useState([]);
   const [enabledStyles, setEnabledStyles] = React.useState([]);
+  const [hasToken, setHasToken] = React.useState(true);
 
   // Initial load: kits + saved settings.
   React.useEffect(() => {
     let active = true;
     (async () => {
       try {
-        const [{ data: kitList }, { data: settings }] = await Promise.all([
+        const [{ data: kitList }, { data: settings }, { data: status }] = await Promise.all([
           get(`/${PLUGIN_ID}/kits`),
           get(`/${PLUGIN_ID}/settings`),
+          get(`/${PLUGIN_ID}/status`),
         ]);
         if (!active) return;
+        setHasToken(Boolean(status && status.hasToken));
         setKits(Array.isArray(kitList) ? kitList : []);
         setKitToken(settings.kitToken || (kitList[0] && kitList[0].token) || '');
         setVersion(settings.version || (kitList[0] && kitList[0].version) || '7.x');
         setEnabledStyles(settings.enabledStyles || ['classic-solid']);
       } catch {
-        if (active) setNotice({ variant: 'danger', title: 'Failed to load settings (is FONTAWESOME_API_TOKEN set?)' });
+        if (active) setNotice({ variant: 'danger', title: 'Failed to load settings (check FONTAWESOME_API_TOKEN).' });
       } finally {
         if (active) setLoading(false);
       }
@@ -123,19 +126,29 @@ const Settings = () => {
               </Alert>
             ) : null}
 
+            {!hasToken ? (
+              <Alert closeLabel="Close" title="Using the free icon set" variant="default">
+                No <code>FONTAWESOME_API_TOKEN</code> is configured, so the picker uses the free icons
+                bundled with the plugin (Classic Solid, Classic Regular, Brands). Add a token to unlock
+                your kits and Pro families.
+              </Alert>
+            ) : null}
+
             <Box background="neutral0" padding={6} hasRadius shadow="tableShadow">
               <Flex direction="column" alignItems="stretch" gap={5}>
-                <Field.Root name="kit" hint="Sets the Font Awesome version and which packages are available.">
-                  <Field.Label>Kit</Field.Label>
-                  <SingleSelect value={kitToken} onChange={onKitChange}>
-                    {kits.map((k) => (
-                      <SingleSelectOption key={k.token} value={k.token}>
-                        {`${k.name} (${k.version}) — ${k.token}`}
-                      </SingleSelectOption>
-                    ))}
-                  </SingleSelect>
-                  <Field.Hint />
-                </Field.Root>
+                {hasToken ? (
+                  <Field.Root name="kit" hint="Sets the Font Awesome version and which packages are available.">
+                    <Field.Label>Kit</Field.Label>
+                    <SingleSelect value={kitToken} onChange={onKitChange}>
+                      {kits.map((k) => (
+                        <SingleSelectOption key={k.token} value={k.token}>
+                          {`${k.name} (${k.version}) — ${k.token}`}
+                        </SingleSelectOption>
+                      ))}
+                    </SingleSelect>
+                    <Field.Hint />
+                  </Field.Root>
+                ) : null}
 
                 <Field.Root
                   name="styles"
