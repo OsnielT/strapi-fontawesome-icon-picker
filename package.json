@@ -1,6 +1,6 @@
 {
   "name": "strapi-plugin-fontawesome-icon",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Strapi v5 custom field to pick Font Awesome icons: a searchable picker for every family your account is licensed for, fetched via the API and cached.",
   "keywords": [
     "strapi",
