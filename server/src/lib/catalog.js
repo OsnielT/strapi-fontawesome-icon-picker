@@ -128,6 +128,10 @@ const createCatalog = ({ gql, getConfig, store, strapi }) => {
     if (!name) return null;
 
     try {
+      // Reuse a cached style payload when the picker already loaded this style.
+      const cached = await store.get({ key: cacheKeyFor(version, family, style) });
+      if (cached && Object.hasOwn(cached, name)) return cached[name];
+
       const data = await gql(
         `query($v:String!,$n:String!){ release(version:$v){ icon(name:$n){ id label svgs(filter:{ familyStyles:[{ family:${familyToEnum(family)}, style:${styleToEnum(style)} }] }){ width height pathData } } } }`,
         { v: version, n: name }

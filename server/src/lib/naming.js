@@ -21,8 +21,14 @@ const STYLE_PREFIX = {
   semibold: 'fa-semibold',
 };
 
-const familyToEnum = (family) => family.toUpperCase().replace(/-/g, '_');
-const styleToEnum = (style) => style.toUpperCase().replace(/-/g, '_');
+// Enum names are interpolated into GraphQL query text (not variables), so only
+// allow [a-z0-9-] — anything else could inject GraphQL via the public resolve route.
+const toEnum = (v) => {
+  if (!/^[a-z0-9-]+$/i.test(v)) throw new Error('Invalid Font Awesome family/style.');
+  return v.toUpperCase().replace(/-/g, '_');
+};
+const familyToEnum = toEnum;
+const styleToEnum = toEnum;
 
 const classPrefix = (family, style) => {
   const fam = family in FAMILY_PREFIX ? FAMILY_PREFIX[family] : `fa-${family}`;

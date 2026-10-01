@@ -132,7 +132,8 @@ GET /api/fontawesome-icon/resolve?id=fa-jelly-duo%20fa-regular%20fa-user
 
 Notes:
 - It returns **only public icon geometry** — never the API token or account data — so it is **unauthenticated** (`auth: false`). The secret `FONTAWESOME_API_TOKEN` stays server‑side.
-- It reuses the same server‑side cache, so repeated look‑ups don't re‑hit the Font Awesome API.
+- It checks the server‑side style cache first (populated when editors browse a package); only icons not yet cached are fetched from the Font Awesome API.
+- Input is validated before any query is built, so the public route can't inject GraphQL.
 - All other routes are admin‑only (`admin::isAuthenticatedAdmin`); this is the single intentionally public one.
 
 ---
@@ -158,6 +159,12 @@ See [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the code layout.
 
 ---
 
+## Issues & support
+
+Found a bug or have a feature request? [Open an issue](https://github.com/OsnielT/strapi-fontawesome-icon-picker/issues) with your Strapi version, plugin version, and steps to reproduce. Please report security issues privately via GitHub's **Report a vulnerability** on the Security tab rather than a public issue.
+
+---
+
 ## License
 
-MIT
+[MIT](./LICENSE)

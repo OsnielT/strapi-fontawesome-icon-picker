@@ -1,7 +1,7 @@
 {
   "name": "strapi-plugin-fontawesome-icon",
   "version": "0.2.2",
-  "description": "A Strapi v5 custom field for picking Font Awesome icons — searchable picker with every licensed family (Classic, Sharp, Duotone, Jelly, and more), sourced from the Font Awesome API and cached.",
+  "description": "Strapi v5 custom field to pick Font Awesome icons: a searchable picker for every family your account is licensed for, fetched via the API and cached.",
   "keywords": [
     "strapi",
     "strapi-plugin",
