@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/logo-512.png" alt="Font Awesome Icon Picker logo" width="120" height="120"></p>
+
 # Font Awesome Icon Picker for Strapi
 
 [![npm version](https://img.shields.io/npm/v/strapi-plugin-fontawesome-icon.svg)](https://www.npmjs.com/package/strapi-plugin-fontawesome-icon)
