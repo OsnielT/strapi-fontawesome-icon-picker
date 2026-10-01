@@ -18,13 +18,20 @@ const CategoryNav = ({ categories, onJump }) => (
   <>
     <Divider />
     <Flex gap={1} padding={2} overflow="auto" background="neutral100">
-      {categories.map((cat) => (
-        <IconButton key={cat.id} variant="ghost" label={cat.label} onClick={() => onJump(cat.id)}>
-          <Box tag="span" style={{ lineHeight: 0 }}>
-            <FaSvg icon={cat.icons[0]} size={14} />
-          </Box>
+      {categories.length ? (
+        categories.map((cat) => (
+          <IconButton key={cat.id} variant="ghost" label={cat.label} onClick={() => onJump(cat.id)}>
+            <Box tag="span" style={{ lineHeight: 0 }}>
+              <FaSvg icon={cat.icons[0]} size={14} />
+            </Box>
+          </IconButton>
+        ))
+      ) : (
+        // Invisible placeholder keeps the bar's height while a package loads.
+        <IconButton variant="ghost" label="" disabled aria-hidden style={{ visibility: 'hidden' }}>
+          <span />
         </IconButton>
-      ))}
+      )}
     </Flex>
   </>
 );
@@ -32,7 +39,7 @@ const CategoryNav = ({ categories, onJump }) => (
 const PickerBody = ({ loading, query, results, displayCategories, value, onSelect, scroll, t }) => {
   if (loading) {
     return (
-      <Flex justifyContent="center" padding={6}>
+      <Flex justifyContent="center" alignItems="center" height="100%">
         <Loader small>{t('input.loading', 'Loading…')}</Loader>
       </Flex>
     );
@@ -41,7 +48,7 @@ const PickerBody = ({ loading, query, results, displayCategories, value, onSelec
     return results.length ? (
       <IconGrid icons={results} value={value} onSelect={onSelect} />
     ) : (
-      <Flex justifyContent="center" padding={6}>
+      <Flex justifyContent="center" alignItems="center" height="100%">
         <Typography variant="pi" textColor="neutral500">
           {t('input.empty', 'No icons found')}
         </Typography>
@@ -97,12 +104,12 @@ const PickerContent = ({ selection, catalog, query, setQuery, value, onSelect, o
       </Flex>
       <Divider />
 
-      {/* Scrollable body */}
+      {/* Scrollable body — fixed height so the popover doesn't resize while loading */}
       <Box
         ref={scroll.scrollRef}
         paddingLeft={3}
         paddingRight={3}
-        maxHeight="280px"
+        height="280px"
         overflow="auto"
       >
         <PickerBody
@@ -117,7 +124,7 @@ const PickerContent = ({ selection, catalog, query, setQuery, value, onSelect, o
         />
       </Box>
 
-      {!query && displayCategories.length > 0 ? (
+      {!query ? (
         <CategoryNav categories={displayCategories} onJump={scroll.jumpToCategory} />
       ) : null}
 
